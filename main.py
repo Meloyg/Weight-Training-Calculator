@@ -9,6 +9,9 @@ def calculate_total_weight_for_exercise(exercises, exercise):
     weight, sets, reps = exercises[exercise]
     return weight * sets * reps
 
+
+user_input = input("Enter your exercise: (chest, back): ").lower()
+
 chest_exercises = {
     "bench press": (60, 4, 10),
     "chest fly": (50, 4, 12),
@@ -18,19 +21,41 @@ chest_exercises = {
     "tricep dips": (25, 4, 12),
 }
 
+back_exercises = {
+    "wide grip pull": (55, 4, 10),
+    "dumbbell rows": (46, 4, 12),
+    "cable rows": (60, 4, 10),
+    "close grip pull": (60, 4, 10),
+    "pullovers": (30, 4, 12),
+    "bicep curls": (25, 4, 10),
+}
+
 # Get today's date
 today = datetime.datetime.now()
+
+
+exercises = {}
+
+if user_input == "chest":
+    exercises = chest_exercises
+elif user_input == "back":
+    exercises = back_exercises
+else:
+    print("Invalid input")
+    exit()
+
+print(f"Starting {user_input} workout plan\n")
 
 for week in range(10):
     print(f"Week {week + 1} - {today.strftime('%d/%m/%Y')}")
     
-    for exercise, details in chest_exercises.items():
-        total_weight = calculate_total_weight_for_exercise(chest_exercises, exercise)
-        print(math.ceil(total_weight * 1.03 - total_weight))
+    for exercise, details in exercises.items():
+        total_weight = calculate_total_weight_for_exercise(exercises, exercise)
+        
         print(f"Total weight for {exercise}: {total_weight}kg")
     
-    print(f"Total weight: {calculate_total_weight(chest_exercises)}kg\n")
+    print(f"Total weight: {calculate_total_weight(exercises)}kg\n")
     
     # Increase weights for next week
-    chest_exercises = {exercise: (math.ceil(details[0] * 1.03), details[1], details[2]) for exercise, details in chest_exercises.items()}
+    exercises = {exercise: (math.ceil(details[0] * 1.03), details[1], details[2]) for exercise, details in exercises.items()}
     today += datetime.timedelta(days=7)
