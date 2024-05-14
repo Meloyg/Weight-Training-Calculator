@@ -9,7 +9,7 @@ def calculate_total_weight_for_exercise(exercise):
     weight, sets, reps = exercise
     return weight * sets * reps
 
-user_input = input("Enter your exercise: (chest, back): ").lower()
+user_input = input("Enter your exercise: (chest, back, shoulder): ").lower()
 
 exercises = None
 
@@ -17,16 +17,18 @@ if user_input == "chest":
     exercises = data.chestData.chest_exercises
 elif user_input == "back":
     exercises = data.backData.back_exercises
+elif user_input == "shoulder":
+    exercises = data.shoulderData.shoulder_exercises
 else:
     print("Invalid input")
     exit()
 
 print(f"Starting {user_input} workout plan\n")
 
-today = datetime.datetime.now()
+startDate = datetime.datetime(2024, 5, 14)
 
 for week in range(10):
-    print(f"Week {week + 1} - {today.strftime('%d/%m/%Y')}")
+    print(f"Week {week + 1} - {startDate.strftime('%d/%m/%Y')}")
 
     total_weight = sum(calculate_total_weight_for_exercise(exercise) for exercise in exercises.values())
     print(f"Total weight: {total_weight}kg")
@@ -40,4 +42,4 @@ for week in range(10):
     
     # Increase weights for next week
     exercises = {exercise: (math.ceil(weight * 1.03), sets, reps) for exercise, (weight, sets, reps) in exercises.items()}
-    today += datetime.timedelta(days=7)
+    startDate += datetime.timedelta(days=7)
